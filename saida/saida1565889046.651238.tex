@@ -1,0 +1,231 @@
+\documentclass{article}
+\usepackage[top=20mm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[brazil]{babel}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{multirow}
+\usepackage{hyperref}
+\usepackage{caption}
+\usepackage{longtable}
+\usepackage{minted}
+\usepackage{url}
+\usepackage{tikz}
+\usemintedstyle{manni}
+\DeclareCaptionType{script}
+\newcommand{\leg}[1]{
+    \begin{center}
+    \textbf{Fonte: } #1.
+    \end{center}
+    \vspace{0.5cm}
+}
+\begin{document}
+\section*{Exercício 01}
+\captionof{script}{Script para execução do exercício 01}\vspace{0.2cm}
+
+\begin{minted}[linenos]{Matlab}
+clear;
+clc;
+
+a = 3.132;
+b = -23.004;
+c = 5*pi;
+d = 25/pi;
+e = (-2.234*pi/2);
+
+save workspace;
+
+clear all;
+clc;
+
+\end{minted}
+\leg{autores}
+\section*{Exercício 02}
+\captionof{script}{Script para execução do exercício 02}\vspace{0.2cm}
+
+\begin{minted}[linenos]{Matlab}
+load '../ex1/workspace';
+
+x = 3.34*a - pi/c;
+y = log(d + 34.0054);
+z = log(e); 
+
+clear z;
+
+save exerc1.mat;
+\end{minted}
+\leg{autores}
+\section*{Exercício 03}
+\captionof{script}{Script para execução do exercício 03}\vspace{0.2cm}
+
+\begin{minted}[linenos]{Matlab}
+clear all;
+clc;
+
+A = [ 1  2  3  4; 
+      5  6  7  8;
+      9  10 11 12;
+      14 83 23 0  ];
+      
+B = [ 7.4   pi 0;
+      -4.01 2  3;
+      0.1   10 0 ];
+      
+c = A(3, 2);
+d = B(2, 2);
+e = A(1, 1:3);
+f = B(:, 3);
+A(1, : ) = [ B(2, : ), 0 ];
+A(2, : ) = A(4, : );
+C = A(1:2, 2:3);
+D = B(1, : );
+\end{minted}
+\leg{autores}
+\section*{Exercício 04}
+\captionof{script}{Script para execução do exercício 04}\vspace{0.2cm}
+
+\begin{minted}[linenos]{Matlab}
+clear all;
+clc;
+
+A = [ 1  2  3  4; 
+      5  6  7  8;
+      9  10 11 12;
+      14 83 23 0  ];
+
+% a
+% Válido      
+% c = A(2,3);
+
+% b
+% Inválido
+% c = A[1 2 3];
+
+% c
+% Válido      
+% c = A([1 2 3], 4);
+
+% d
+% Válido      
+% c = A(1:3, 4);
+
+% e
+% Válido
+% c = A([1:4], 2);
+
+% f
+% Válido
+% c = A(2, : );
+
+% g
+% Válido
+% c = A( :, : );
+
+% h
+% Válido
+% c = A(2:4, [1 3 4])
+\end{minted}
+\leg{autores}
+\section*{Exercício 05}
+\captionof{script}{Script para execução do exercício 05}\vspace{0.2cm}
+
+\begin{minted}[linenos]{Matlab}
+clc;
+clear all;
+
+x = [0:15];
+
+y = [-3.4:0.32:8];
+
+z = [10:-1.23:1];
+
+t = [0:10*pi:15^2];
+\end{minted}
+\leg{autores}
+\section*{Exercício 06}
+\captionof{script}{Script para execução do exercício 06}\vspace{0.2cm}
+
+\begin{minted}[linenos]{Matlab}
+clc;
+clear all;
+
+A = [ 1 2 3;
+      4 5 6;
+      7 8 9 ];
+      
+B = A(:, :);
+
+C = A*B;
+
+D = A.*B;
+
+
+
+\end{minted}
+\leg{autores}
+\section*{Exercício 07}
+\captionof{script}{Script para execução do exercício 07}\vspace{0.2cm}
+
+\begin{minted}[linenos]{Matlab}
+clc;
+clear all;
+
+a = 5.5;
+b = 1.5;
+k = -3;
+
+% Verdadeiro
+a < 10
+
+% Verdadeiro
+a + b >= 6.5
+
+% Verdadeiro
+k ~= 0
+
+% Falso
+b - k > a
+
+% Verdadeiro
+-k <= 6 + 6
+
+% Verdadeiro
+a < 10 & a > 5
+
+% Falso
+a == b
+\end{minted}
+\leg{autores}
+\section*{Exercício 08}
+\captionof{script}{Script para execução do exercício 08}\vspace{0.2cm}
+
+\begin{minted}[linenos]{Matlab}
+clc;
+clear all;
+
+a = 3.132;
+b = 23.004;
+c = 5*pi;
+
+a + b + eps
+
+c - b * ( a / b )
+
+c - b
+
+a^2
+
+sqrt(a)
+
+abs(b)
+
+floor(b)
+
+round(b)
+
+ceil(b)
+\end{minted}
+\leg{autores}
+\end{document}
