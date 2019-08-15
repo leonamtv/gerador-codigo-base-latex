@@ -2,6 +2,11 @@
 # râmetros via linha de comando
 import sys
 
+# Importando biblioteca de datas
+from datetime import datetime
+
+# Importando biblioteca para fazer parsing dos 
+# argumentos.
 import argparse
 
 # Importação da biblioteca de interface com o SO
@@ -119,7 +124,7 @@ def generate_latex_code ( template: str ):
     """
 
     # Abre o arquivo onde será gravado
-    file_out = open('saida/teste.tex' , 'w')
+    file_out = open('saida/saida' + datetime.timestamp(datetime.now()).__str__() + '.tex' , 'w')
     
     # Escreve o arquivo
     file_out.write(template)
