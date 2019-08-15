@@ -1,13 +1,20 @@
+# Importando a biblioteca 'sys' para receber os pa-
+# râmetros via linha de comando
+import sys
+
+import argparse
+
 # Importação da biblioteca de interface com o SO
 import os
 
 # Importação de biblioteca de expressões regulares
 import re
 
+# Importando biblioteca para utilização de JSON
+import json
+
 # Regex de nomes de arquivos que devem ser incluídos
-including_names = {
-    '.+\.m'
-}
+including_names = []
 
 # Definição do header do arquivo latex do jeito que 
 # costumo usar
@@ -46,12 +53,38 @@ footer = r'''\end{document}'''
 
 # Definição do header de cada bloco de código
 code_header = r'''
-\begin{minted}[linenos]{Matlab}
-'''
+\begin{minted}[linenos]{'''
+
+
 # Definição do rodapé de cada bloco de código
 code_footer = r'''
 \end{minted}
 '''
+
+def search ( extension: str, data ):
+    """
+    Busca no arquivo 'data' passado por parâmetros,
+    pelo nome da linguagem que contém a extensão pas-
+    sada.
+    """
+
+    for entry in data:
+        try: 
+            if extension in entry['extensions']: return(entry["name"])
+        except KeyError: pass
+    return None
+
+def find_language_name ( extension: str ) :
+    """
+    Procura o nome da linguagem a partir da extensão do
+    arquivo passado por parâmetro.
+    """
+
+    # Abre json com as linguagens e suas extensões
+    languages = json.load(open('lang.json', 'r'))['languages']
+
+    # Returna o resultado da busca pela extensão
+    return search(extension, languages)
 
 
 def filter_files ( lista ) :
@@ -113,7 +146,7 @@ def execute ():
         if len(filenames) > 0:
             for file in filter_files(filenames):
                 files_to_use.append(dirpath.__str__() + '/' + file)
-    
+
     # Inicia o template com o header do documento
     template = header
     
@@ -182,8 +215,14 @@ def execute ():
                 # Adiciona a legenda do código no bloco atual do template
                 template += r'''\captionof{script}{Script para execução do exercício ''' + questao_atual + r''' letra ''' + letra_exercicio.group(0) + r'''}\vspace{0.2cm}''' + '\n'
 
-        # Adiciona ao template o cabeçalho de bloco de código
-        template += code_header
+        # Busca a extensão do arquivo.
+        extensao = re.search(r'(\.[^.]+)$', file_path)
+
+        # Caso a busca seja bem sucedida.
+        if extensao:
+            # Adiciona ao template o cabeçalho de bloco de código e a lin-
+            # guagem buscada a partir da extensão do arquivo.
+            template += code_header + find_language_name(extensao.group(0)) + '}\n'
 
         # Para cada linha do arquivo contendo o código do arquivo
         # adiciona a mesma ao template,
@@ -202,10 +241,29 @@ def execute ():
     # Gera e salva o código latex do template gerado anteriormente
     generate_latex_code(template)
 
-
 def main():
-    execute()   
+    """
+    Cria um parser de argumentos para receber as extensões de ar-
+    quivos a ser processadas, e chama a função para gerar o latex.
+    """
 
+    # Cria o parser de argumentos
+    parser = argparse.ArgumentParser(description='Gerador de relatórios')
+
+    # Adiciona um tipo de argumento para receber as extensões.
+    parser.add_argument('-e', help='extensões aceitáveis', nargs='+', action='append')
+
+    # Filtra as extensões.
+    extensions = list(map(lambda x: '.' + x if '.' not in x else x, parser.parse_args().e[0]))
+
+    # Adiciona o regex aos nomes inclusos para cada extensão
+    # obtida via parâmetro.
+    for i in extensions:
+        including_names.append('.+\\' + i)
+
+    # se existe extensções, executa o processamento.
+    if len(including_names) > 0:
+        execute()   
 
 if __name__ == "__main__":
     main()
