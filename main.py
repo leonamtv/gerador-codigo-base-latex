@@ -150,6 +150,8 @@ def execute ():
     # Inicia o template com o header do documento
     template = header
     
+    print(files_to_use)
+
     # Variável que irá armazenar a questão atual para que
     # possamos gerar uma seção com seu número no latex:
     # - questao_atual = 1 irá gerar um látex com a seção
@@ -253,16 +255,15 @@ def main():
     # Adiciona um tipo de argumento para receber as extensões.
     parser.add_argument('-e', help='extensões aceitáveis', nargs='+', action='append')
 
-    # Filtra as extensões.
-    extensions = list(map(lambda x: '.' + x if '.' not in x else x, parser.parse_args().e[0]))
+    if parser.parse_args().e:
+        # Filtra as extensões.
+        extensions = list(map(lambda x: '.' + x if '.' not in x else x, parser.parse_args().e[0]))
 
-    # Adiciona o regex aos nomes inclusos para cada extensão
-    # obtida via parâmetro.
-    for i in extensions:
-        including_names.append('.+\\' + i)
+        # Adiciona o regex aos nomes inclusos para cada extensão
+        # obtida via parâmetro.
+        for i in extensions:
+            including_names.append('.+\\' + i)
 
-    # se existe extensções, executa o processamento.
-    if len(including_names) > 0:
         execute()   
 
 if __name__ == "__main__":
