@@ -1,0 +1,128 @@
+{
+    "languages": [
+        {
+            "name": "Assembly",
+            "extensions": [
+                ".asm",
+                ".a51",
+                ".inc",
+                ".nasm"
+            ]
+        },
+        {
+            "name": "C",
+            "extensions": [
+                ".c",
+                ".cats",
+                ".h",
+                ".idc",
+                ".w"
+            ]
+        },
+        {
+            "name": "C#",
+            "extensions": [
+                ".cs",
+                ".cake",
+                ".cshtml",
+                ".csx"
+            ]
+        },
+        {
+            "name": "C++",
+            "extensions": [
+                ".cpp",
+                ".c++",
+                ".cc",
+                ".cp",
+                ".cxx",
+                ".h",
+                ".h++",
+                ".hh",
+                ".hpp",
+                ".hxx",
+                ".inc",
+                ".inl",
+                ".ipp",
+                ".tcc",
+                ".tpp"
+            ]
+        },
+        {
+            "name": "Java",
+            "extensions": [
+                ".java"
+            ]
+        },
+        {
+            "name": "JavaScript",
+            "extensions": [
+                ".js",
+                "._js",
+                ".bones",
+                ".es",
+                ".es6",
+                ".frag",
+                ".gs",
+                ".jake",
+                ".jsb",
+                ".jscad",
+                ".jsfl",
+                ".jsm",
+                ".jss",
+                ".njs",
+                ".pac",
+                ".sjs",
+                ".ssjs",
+                ".sublime-build",
+                ".sublime-commands",
+                ".sublime-completions",
+                ".sublime-keymap",
+                ".sublime-macro",
+                ".sublime-menu",
+                ".sublime-mousemap",
+                ".sublime-project",
+                ".sublime-settings",
+                ".sublime-theme",
+                ".sublime-workspace",
+                ".sublime_metrics",
+                ".sublime_session",
+                ".xsjs",
+                ".xsjslib"
+            ]
+        },
+        {
+            "name": "Matlab",
+            "extensions": [
+                ".matlab",
+                ".m"
+            ]
+        },
+        {
+            "name": "Python",
+            "extensions": [
+                ".py",
+                ".bzl",
+                ".cgi",
+                ".fcgi",
+                ".gyp",
+                ".lmi",
+                ".pyde",
+                ".pyp",
+                ".pyt",
+                ".pyw",
+                ".rpy",
+                ".tac",
+                ".wsgi",
+                ".xpy"
+            ]
+        },
+        {
+            "name": "TypeScript",
+            "extensions": [
+                ".ts",
+                ".tsx"
+            ]
+        }
+    ]
+}
