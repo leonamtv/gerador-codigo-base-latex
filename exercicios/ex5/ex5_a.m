@@ -1,0 +1,17 @@
+clc;
+clear;
+t = [0:0.5:4*pi];
+subplot(2,1,1);
+x = sin(t);
+plot(t,x, "-*", "color", "b");
+grid on;
+title("Grafico da funcao sen(t)");
+ylabel("sen(t)");
+xlabel("Tempo(s)");
+subplot(2,1,2);
+y = cos(t);
+plot(t,y, "-o", "color", "r");
+grid on;
+title("Grafico da funcao cos(t)");
+ylabel("cos(t)");
+xlabel("Tempo(s)");

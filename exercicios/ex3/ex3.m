@@ -1,0 +1,11 @@
+clc;
+clear;
+fprintf("a)\n");
+M = rand(3, 2);
+display(M);
+fprintf("b)\n");
+A = ones(3);
+display(A);
+fprintf("c)\n");
+B = zeros(4, 2);
+display(B);
