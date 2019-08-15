@@ -150,7 +150,7 @@ def execute ():
     # Inicia o template com o header do documento
     template = header
     
-    print(files_to_use)
+    files_to_use.sort()
 
     # Variável que irá armazenar a questão atual para que
     # possamos gerar uma seção com seu número no latex:
