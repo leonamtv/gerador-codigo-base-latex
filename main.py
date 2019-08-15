@@ -38,18 +38,14 @@ header = r'''\documentclass{article}
 \usepackage{minted}
 \usepackage{url}
 \usepackage{tikz}
-
 \usemintedstyle{manni}
-
 \DeclareCaptionType{script}
-
 \newcommand{\leg}[1]{
     \begin{center}
     \textbf{Fonte: } #1.
     \end{center}
     \vspace{0.5cm}
 }
-
 \begin{document}
 '''
 
@@ -267,7 +263,7 @@ def main():
         # Adiciona o regex aos nomes inclusos para cada extensão
         # obtida via parâmetro.
         for i in extensions:
-            including_names.append('.+\\' + i)
+            including_names.append('.+\\' + i + '$')
 
         execute()   
 
