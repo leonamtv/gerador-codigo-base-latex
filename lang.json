@@ -1,15 +1,6 @@
 {
     "languages": [
         {
-            "name": "Assembly",
-            "extensions": [
-                ".asm",
-                ".a51",
-                ".inc",
-                ".nasm"
-            ]
-        },
-        {
             "name": "C",
             "extensions": [
                 ".c",
