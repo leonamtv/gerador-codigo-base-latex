@@ -1,15 +1,9 @@
 clc;
 clear;
-A = [
-  5 6 10;
-  -3 0 14;
-  0 -7 21
-];
-
-B = [
-  4;
-  10;
-  0
-];
-
-x = linsolve(A,B)
+pkg load control;
+printf("Letra a\n");
+a = zpk([ -2 -4 ], [ 0 -3 -5 ], 10)
+printf("Letra b\n");
+b = zpk([ -2 -4 ], [ 1 2 3 ], 1)
+printf("Letra c\n");
+c = zpk([ -2 -4 ], [ -7 -8 -9 ], 20)

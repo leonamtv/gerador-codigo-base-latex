@@ -1,18 +1,9 @@
 clc;
 clear;
-A = [ 4 2*pi ;  6*j (10+sqrt(2)*j)];
-B = [ 6*j -13*pi ; pi 16 ];
-fprintf("A+B\n");
-A + B
-fprintf("AB\n");
-A*B
-fprintf("A²\n");
-A.^2
-fprintf("A'\n");
-A'
-fprintf("B-¹\n");
-B.^(-1)
-fprintf("B'A'\n");
-(B')*(A')
-fprintf("A² + B² - AB\n");
-A.^2 + B.^2 - A*B
+pkg load control;
+printf("Letra a\n");
+a = tf([ 10 ], [ 1 2 5 ])
+printf("Letra b\n");
+b = tf([ 1 3 ], [ 1 5 1 ])
+printf("Letra c\n");
+c = tf([ 6 0 1 ], [ 1 3 3 1 ])
