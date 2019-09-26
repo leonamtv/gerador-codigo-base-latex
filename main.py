@@ -278,8 +278,12 @@ def execute ():
 
         if extensao.group(0) == '.m':
             try:
+                # removendo print() do arquivo .m (dispara uma exceção no python)
                 script_execution_output = remove_prints_octave_matlab('exercicios/ex' + questao_atual + '/ex' + questao_atual)
+                # adiciona saída do programa gerada a partir da execução do script no terminal
+                # do sistema operacional
                 template += str(subprocess.check_output([ 'octave', 'exercicios/ex' + questao_atual + '/ex' + questao_atual + '_tmpcache.m' ], universal_newlines=True)) 
+                # remove arquivo de cache
                 subprocess.check_output([ 'rm', 'exercicios/ex' + questao_atual + '/ex' + questao_atual + '_tmpcache.m' ])
             except:
                 print('[ warning ] : Problema na execução do script exercicios/ex' + questao_atual + '/ex' + questao_atual + '.m')
