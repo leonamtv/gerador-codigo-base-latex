@@ -73,14 +73,19 @@ code_footer = r'''
 '''
 
 def remove_prints_octave_matlab ( filename: str ):
+    # abrindo arquivo a ser analisado
     file = open(filename + '.m', 'r')
+    # arquivo temporário para armazenar versão
+    # modificada do arquivo original
     file_cache = open(filename + '_tmpcache.m', 'w')
+    # string para template de saída
     output = ''
-
     for line in file:
+        # adiciona à string de saída toda linha que 
+        # não contém o comando print
         if 'print(' not in line:
-            output += line
-    
+            output += line  
+    # escreve no arquivo provisório de saída
     file_cache.write(output)
 
 def search ( extension: str, data ):
