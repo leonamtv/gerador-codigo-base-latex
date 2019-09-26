@@ -18,12 +18,17 @@ import re
 # Importando biblioteca para utilização de JSON
 import json
 
+# Importando subprocesso para injetar comandos no
+# terminal do Sistema Operacional
+import subprocess
+
 # Regex de nomes de arquivos que devem ser incluídos
 including_names = []
 
 # Definição do header do arquivo latex do jeito que 
 # costumo usar
 header = r'''\documentclass{article}
+
 \usepackage[top=20mm]{geometry}
 \usepackage[utf8]{inputenc}
 \usepackage[brazil]{babel}
@@ -38,19 +43,24 @@ header = r'''\documentclass{article}
 \usepackage{minted}
 \usepackage{url}
 \usepackage{tikz}
+
 \usemintedstyle{manni}
+
 \DeclareCaptionType{script}
+
 \newcommand{\leg}[1]{
     \begin{center}
     \textbf{Fonte: } #1.
     \end{center}
     \vspace{0.5cm}
 }
+
 \begin{document}
+
 '''
 
 # Definição do rodapé do documento
-footer = r'''\end{document}'''
+footer = '\n' + r'''\end{document}'''
 
 # Definição do header de cada bloco de código
 code_header = r'''
@@ -61,6 +71,17 @@ code_header = r'''
 code_footer = r'''
 \end{minted}
 '''
+
+def remove_prints_octave_matlab ( filename: str ):
+    file = open(filename + '.m', 'r')
+    file_cache = open(filename + '_tmpcache.m', 'w')
+    output = ''
+
+    for line in file:
+        if 'print(' not in line:
+            output += line
+    
+    file_cache.write(output)
 
 def search ( extension: str, data ):
     """
@@ -151,6 +172,16 @@ def execute ():
     # Inicia o template com o header do documento
     template = header
     
+    # Abre o arquivo com os dados do cabeçalho
+    file = open('assets/inicio.tex', 'r')
+
+    # Adiciona cada uma das linhas do cabeçalho no
+    # template
+    for line in file:
+        template += line
+
+    template += '\n'
+
     files_to_use.sort()
 
     # Variável que irá armazenar a questão atual para que
@@ -180,13 +211,18 @@ def execute ():
         # irá ser testada. Essa tentativa representa os exer-
         # cícios com tópicos/letras:
         # - Nº1 letra a, nº2 letra b etc.
+
+        # variavel para armazenar a questao atual
+        questao_atual = 0
+
         if numero_exercicio:
             # Atualiza a questão atual
             questao_atual = numero_exercicio.group(0)
             # Adiciona seção correspondente ao template
-            template += r'''\section*{Exercício ''' + questao_atual + '}\n'
+            template += '\n' + r'''\section*{Exercício ''' + questao_atual + '}\n'
             # Adiciona legenda no bloco atual do template
-            template += r'''\captionof{script}{Script para execução do exercício ''' + questao_atual + r'''}\vspace{0.2cm}'''  + '\n'
+            template += '\n' + r'''\captionof{script}{Script para execução do exercício ''' + questao_atual + r'''}\vspace{0.2cm}'''  + '\n'
+           
         else:
             # Tenta encontrar o número do exercício com o se-
             # guinte padrão:
@@ -202,7 +238,7 @@ def execute ():
                     # Atualiza a questão atual com o novo número
                     questao_atual = numero_exercicio.group(0)
                     # Gera uma seção nova com o nome da questão atual
-                    template += r'''\section*{Exercício ''' + questao_atual + '}\n'
+                    template += '\n\n' + r'''\section*{Exercício ''' + questao_atual + '}\n'
 
                 # Tenta uma busca pela letra/tópico do exercício:
                 # - arquivo 'pasta_1/pasta_2/ex1/ex1_a.m' tem letra 
@@ -216,7 +252,7 @@ def execute ():
                     template += r'''\subsection*{Letra ''' + letra_exercicio.group(0) + '}\n'
 
                 # Adiciona a legenda do código no bloco atual do template
-                template += r'''\captionof{script}{Script para execução do exercício ''' + questao_atual + r''' letra ''' + letra_exercicio.group(0) + r'''}\vspace{0.2cm}''' + '\n'
+                template += '\n' + r'''\captionof{script}{Script para execução do exercício ''' + questao_atual + r''' letra ''' + letra_exercicio.group(0) + r'''}\vspace{0.2cm}''' + '\n'
 
         # Busca a extensão do arquivo.
         extensao = re.search(r'(\.[^.]+)$', file_path)
@@ -235,8 +271,23 @@ def execute ():
         # Adiciona o rodapé de código no template
         template += code_footer
 
+        # Adiciona subseção para saída do script
+        template += '\n' + r'''\subsection*{Saída do exercício ''' + questao_atual + '}\n'
+        # Adiciona abertura de verbatim para saída do comando
+        template += '\n' + r'''\begin{small}''' + '\n' + r'''\begin{verbatim}''' + '\n'
+
+        if extensao.group(0) == '.m':
+            try:
+                script_execution_output = remove_prints_octave_matlab('exercicios/ex' + questao_atual + '/ex' + questao_atual)
+                template += str(subprocess.check_output([ 'octave', 'exercicios/ex' + questao_atual + '/ex' + questao_atual + '_tmpcache.m' ], universal_newlines=True)) 
+                subprocess.check_output([ 'rm', 'exercicios/ex' + questao_atual + '/ex' + questao_atual + '_tmpcache.m' ])
+            except:
+                print('[ warning ] : Problema na execução do script exercicios/ex' + questao_atual + '/ex' + questao_atual + '.m')
+        
+        # Adiciona fechamento de verbatim para saída do comando
+        template += r'''\end{verbatim}''' + '\n' + r'''\end{small}''' + '\n'
         # Adiciona a fonte do código como autores
-        template += r'''\leg{autores}''' + '\n'
+        template += '\n' + r'''\leg{autores}''' + '\n'
 
     # Adiciona o rodapé do documento ao template
     template += footer
