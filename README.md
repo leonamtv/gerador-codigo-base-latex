@@ -81,3 +81,5 @@ irá carregar arquivos matlab, c e java.
 ### Código gerado:
 
 Para visualizar o código gerado, verifique a pasta `saída`. Nela estará contido o arquivo `Tex` gerado.
+
+O arquivo `assets/inicio.tex` contem o cabeçalho do documento. Para colocar o nome dos autores e o email dos mesmos, altere este arquivo antes de executar o script.
