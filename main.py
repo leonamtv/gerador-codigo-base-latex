@@ -152,7 +152,7 @@ def generate_latex_code ( template: str ):
     file_out.write(template)
 
 
-def execute ():
+def execute ( parser ):
     """
     Função que faz o carregamento dos arquivos e gera o template
     para gerar no final, o arquivo latex básico.
@@ -276,27 +276,33 @@ def execute ():
         # Adiciona o rodapé de código no template
         template += code_footer
 
-        # Adiciona subseção para saída do script
-        template += '\n' + r'''\subsection*{Saída do exercício ''' + questao_atual + '}\n'
-        # Adiciona abertura de verbatim para saída do comando
-        template += '\n' + r'''\begin{small}''' + '\n' + r'''\begin{verbatim}''' + '\n'
-
-        if extensao.group(0) == '.m':
-            try:
-                # removendo print() do arquivo .m (dispara uma exceção no python)
-                script_execution_output = remove_prints_octave_matlab('exercicios/ex' + questao_atual + '/ex' + questao_atual)
-                # adiciona saída do programa gerada a partir da execução do script no terminal
-                # do sistema operacional
-                template += str(subprocess.check_output([ 'octave', 'exercicios/ex' + questao_atual + '/ex' + questao_atual + '_tmpcache.m' ], universal_newlines=True)) 
-                # remove arquivo de cache
-                subprocess.check_output([ 'rm', 'exercicios/ex' + questao_atual + '/ex' + questao_atual + '_tmpcache.m' ])
-            except:
-                print('[ warning ] : Problema na execução do script exercicios/ex' + questao_atual + '/ex' + questao_atual + '.m')
-        
-        # Adiciona fechamento de verbatim para saída do comando
-        template += r'''\end{verbatim}''' + '\n' + r'''\end{small}''' + '\n'
         # Adiciona a fonte do código como autores
         template += '\n' + r'''\leg{autores}''' + '\n'
+
+        if parser.parse_args().o or parser.parse_args().x:
+            # Adiciona subseção para saída do script
+            template += '\n' + r'''\subsection*{Saída do exercício ''' + questao_atual + '}\n'
+            # Adiciona abertura de verbatim para saída do comando
+            template += '\n' + r'''\begin{small}''' + '\n' + r'''\begin{verbatim}''' + '\n'
+
+        if parser.parse_args().x:
+            if extensao.group(0) == '.m':
+                try:
+                    # removendo print() do arquivo .m (dispara uma exceção no python)
+                    script_execution_output = remove_prints_octave_matlab('exercicios/ex' + questao_atual + '/ex' + questao_atual)
+                    # adiciona saída do programa gerada a partir da execução do script no terminal
+                    # do sistema operacional
+                    template += str(subprocess.check_output([ 'octave', 'exercicios/ex' + questao_atual + '/ex' + questao_atual + '_tmpcache.m' ], universal_newlines=True)) 
+                    # remove arquivo de cache
+                    subprocess.check_output([ 'rm', 'exercicios/ex' + questao_atual + '/ex' + questao_atual + '_tmpcache.m' ])
+                except:
+                    print('[ warning ] : Problema na execução do script exercicios/ex' + questao_atual + '/ex' + questao_atual + '.m')
+        
+        if parser.parse_args().o or parser.parse_args().x:
+            # Adiciona fechamento de verbatim para saída do comando
+            template += r'''\end{verbatim}''' + '\n' + r'''\end{small}''' + '\n'
+            # Adiciona a fonte da saída como autores
+            template += '\n' + r'''\leg{autores}''' + '\n'
 
     # Adiciona o rodapé do documento ao template
     template += footer
@@ -316,6 +322,11 @@ def main():
     # Adiciona um tipo de argumento para receber as extensões.
     parser.add_argument('-e', help='extensões aceitáveis', nargs='+', action='append')
 
+    parser.add_argument('-o', help='se passado, adiciona seção de saída do arquivo', action='store_true')
+
+    parser.add_argument('-x', help='se passado, executa o arquivo (caso haja suporte) e captura a saída. \
+                         Ao passar tal argumento, o argumento "-o" é ativado por padrão.', action='store_true')
+
     if parser.parse_args().e:
         # Filtra as extensões.
         extensions = list(map(lambda x: '.' + x if '.' not in x else x, parser.parse_args().e[0]))
@@ -325,7 +336,7 @@ def main():
         for i in extensions:
             including_names.append('.+\\' + i + '$')
 
-        execute()   
+        execute(parser)   
 
 if __name__ == "__main__":
     main()
